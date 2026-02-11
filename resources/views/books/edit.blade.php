@@ -1,164 +1,277 @@
 @extends('layouts.layout')
 
-@section('title', 'Edit Book - BookStock')
+@section('title', 'Edit Book | Interactive Cares')
 
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header bg-warning">
-                <h4 class="mb-0"><i class="bi bi-pencil"></i> Edit Book</h4>
+    <!-- Top Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-20">
+        <div class="px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <a href="{{ route('books.index') }}" class="text-gray-500 hover:text-gray-700 lg:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                </a>
+                <div>
+                    <h1 class="text-xl font-bold text-gray-800">Edit Book</h1>
+                    <p class="text-sm text-gray-500">Update book information</p>
+                </div>
             </div>
-            <div class="card-body">
-                <form action="{{ route('books.update', $book->id) }}" method="POST" enctype="multipart/form-data">
+
+            <!-- User Dropdown -->
+            <div class="relative">
+                <button id="userMenuButton"
+                    class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 transition-colors"
+                    onclick="toggleDropdown()">
+                    <div
+                        class="w-9 h-9 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white font-medium text-sm">
+                        AB
+                    </div>
+                    <div class="hidden md:block text-left">
+                        <p class="text-sm font-medium text-gray-700">Md Abul Bashar</p>
+                        <p class="text-xs text-gray-500">hmbashar@gmail.com</p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-5 h-5 text-gray-400">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div id="userDropdown"
+                    class="dropdown-menu absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border py-2">
+                    <div class="px-4 py-3 border-b">
+                        <p class="text-sm font-medium text-gray-900">Md Abul Bashar</p>
+                        <p class="text-xs text-gray-500 truncate">hmbashar@gmail.com</p>
+                    </div>
+                    <a href="#"
+                        class="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 text-gray-400">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="#"
+                        class="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 text-gray-400">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                        </svg>
+                        <span>Edit Profile</span>
+                    </a>
+                    <a href="#"
+                        class="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 text-gray-400">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                        </svg>
+                        <span>Change Password</span>
+                    </a>
+                    <div class="border-t my-2"></div>
+                    <a href="#"
+                        class="flex items-center space-x-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                        </svg>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="flex-1 p-6 lg:p-8">
+        <!-- Edit Form -->
+        <div class="max-w-3xl">
+            <div class="bg-white rounded-xl shadow overflow-hidden">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 h-2"></div>
+                <form action="{{ route('books.update', $book->id) }}" method="POST" enctype="multipart/form-data"
+                    class="p-6 space-y-6">
                     @csrf
                     @method('PUT')
 
-                    <!-- Title -->
-                    <div class="mb-3">
-                        <label for="title" class="form-label">
-                            Title <span class="text-danger">*</span>
-                        </label>
-                        <input type="text" 
-                               class="form-control @error('title') is-invalid @enderror" 
-                               id="title" 
-                               name="title" 
-                               value="{{ old('title', $book->title) }}" 
-                               placeholder="Enter book title">
-                        @error('title')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                    <!-- Book Cover Upload -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Book Cover</label>
+                        <div class="flex items-start space-x-6">
+                            <!-- Preview Area -->
+                            <div class="flex-shrink-0">
+                                <div id="imagePreview"
+                                    class="w-32 h-44 rounded-lg bg-gray-100 border-2 border-gray-200 flex items-center justify-center overflow-hidden">
+                                    @if($book->cover_image)
+                                        <img src="{{ asset('storage/' . $book->cover_image) }}" alt="{{ $book->title }}"
+                                            class="w-full h-full object-cover" />
+                                    @else
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-gray-300">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                        </svg>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <!-- Upload Area -->
+                            <div class="flex-1">
+                                <div id="uploadZone" class="upload-zone rounded-lg p-6 text-center cursor-pointer"
+                                    onclick="document.getElementById('cover_image').click()">
+                                    <input type="file" id="cover_image" name="cover_image"
+                                        accept="image/jpeg,image/png,image/jpg" class="hidden"
+                                        onchange="previewImage(event)" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="w-10 h-10 text-gray-400 mx-auto mb-3">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                                    </svg>
+                                    <p class="text-sm text-gray-600 mb-1">
+                                        <span class="font-medium text-indigo-600">Click to upload</span> or drag and drop
+                                    </p>
+                                    <p class="text-xs text-gray-500">PNG, JPG up to 2MB</p>
+                                </div>
+                                @error('cover_image')
+                                    <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
+                                @enderror
+                                <p class="text-xs text-gray-500 mt-2">Leave empty to keep current cover</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- ISBN -->
-                    <div class="mb-3">
-                        <label for="isbn" class="form-label">
-                            ISBN <span class="text-danger">*</span>
-                        </label>
-                        <input type="text" 
-                               class="form-control @error('isbn') is-invalid @enderror" 
-                               id="isbn" 
-                               name="isbn" 
-                               value="{{ old('isbn', $book->isbn) }}" 
-                               placeholder="Enter ISBN number">
-                        @error('isbn')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="row">
-                        <!-- Category -->
-                        <div class="col-md-6 mb-3">
-                            <label for="category_id" class="form-label">
-                                Category <span class="text-danger">*</span>
-                            </label>
-                            <select class="form-select @error('category_id') is-invalid @enderror" 
-                                    id="category_id" 
-                                    name="category_id">
-                                <option value="">-- Select Category --</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" 
-                                            {{ (old('category_id', $book->category_id) == $category->id) ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('category_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Book Title <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" id="title" name="title" value="{{ old('title', $book->title) }}" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors @error('title') border-red-500 @enderror"
+                                placeholder="Enter book title" />
+                            @error('title')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Author -->
-                        <div class="col-md-6 mb-3">
-                            <label for="author_id" class="form-label">
-                                Author <span class="text-danger">*</span>
-                            </label>
-                            <select class="form-select @error('author_id') is-invalid @enderror" 
-                                    id="author_id" 
-                                    name="author_id">
-                                <option value="">-- Select Author --</option>
+                        <div>
+                            <label for="isbn" class="block text-sm font-medium text-gray-700 mb-2">ISBN <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" id="isbn" name="isbn" value="{{ old('isbn', $book->isbn) }}" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors @error('isbn') border-red-500 @enderror"
+                                placeholder="978-0-7475-3269-9" />
+                            @error('isbn')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="author_id" class="block text-sm font-medium text-gray-700 mb-2">Author <span
+                                    class="text-red-500">*</span></label>
+                            <select id="author_id" name="author_id" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors @error('author_id') border-red-500 @enderror">
+                                <option value="">Select an author</option>
                                 @foreach($authors as $author)
-                                    <option value="{{ $author->id }}" 
-                                            {{ (old('author_id', $book->author_id) == $author->id) ? 'selected' : '' }}>
-                                        {{ $author->name }}
-                                    </option>
+                                    <option value="{{ $author->id }}" {{ (old('author_id', $book->author_id) == $author->id) ? 'selected' : '' }}>{{ $author->name }}</option>
                                 @endforeach
                             </select>
                             @error('author_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">Category <span
+                                    class="text-red-500">*</span></label>
+                            <select id="category_id" name="category_id" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors @error('category_id') border-red-500 @enderror">
+                                <option value="">Select a category</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ (old('category_id', $book->category_id) == $category->id) ? 'selected' : '' }}>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
+                                <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
 
-                    <!-- Current Cover Image -->
-                    @if($book->cover_image)
-                        <div class="mb-3">
-                            <label class="form-label">Current Cover Image</label>
-                            <div>
-                                <img src="{{ asset('storage/' . $book->cover_image) }}" 
-                                     alt="{{ $book->title }}" 
-                                     class="img-thumbnail" 
-                                     style="max-width: 150px;">
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Cover Image -->
-                    <div class="mb-3">
-                        <label for="cover_image" class="form-label">
-                            Cover Image {{ $book->cover_image ? '(Upload new to replace)' : '' }}
-                        </label>
-                        <input type="file" 
-                               class="form-control @error('cover_image') is-invalid @enderror" 
-                               id="cover_image" 
-                               name="cover_image" 
-                               accept="image/jpeg,image/png,image/jpg">
-                        <small class="form-text text-muted">
-                            Accepted formats: JPEG, PNG, JPG. Max size: 2MB
-                        </small>
-                        @error('cover_image')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- Description -->
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control @error('description') is-invalid @enderror" 
-                                  id="description" 
-                                  name="description" 
-                                  rows="4" 
-                                  placeholder="Enter book description">{{ old('description', $book->description) }}</textarea>
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea id="description" name="description" rows="4"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors resize-none @error('description') border-red-500 @enderror"
+                            placeholder="Enter book description">{{ old('description', $book->description) }}</textarea>
                         @error('description')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- Published Date -->
-                    <div class="mb-3">
-                        <label for="published_at" class="form-label">Published Date</label>
-                        <input type="date" 
-                               class="form-control @error('published_at') is-invalid @enderror" 
-                               id="published_at" 
-                               name="published_at" 
-                               value="{{ old('published_at', $book->published_at) }}">
+                    <div>
+                        <label for="published_at" class="block text-sm font-medium text-gray-700 mb-2">Published
+                            Date</label>
+                        <input type="date" id="published_at" name="published_at"
+                            value="{{ old('published_at', $book->published_at) }}"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors @error('published_at') border-red-500 @enderror" />
                         @error('published_at')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- Buttons -->
-                    <div class="d-flex justify-content-between">
-                        <a href="{{ route('books.index') }}" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left"></i> Cancel
+                    <div class="flex items-center justify-end space-x-4 pt-4">
+                        <a href="{{ route('books.index') }}"
+                            class="px-6 py-3 border border-gray-300 rounded-lg text-gray-600 hover:text-gray-800 hover:border-gray-400 transition-all duration-200">
+                            Cancel
                         </a>
-                        <button type="submit" class="btn btn-warning">
-                            <i class="bi bi-save"></i> Update Book
+                        <button type="submit"
+                            class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-md">
+                            Update Book
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
+
+    <script>
+        // Image preview functionality
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview" class="w-full h-full object-cover" />';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Drag and drop functionality
+        const uploadZone = document.getElementById('uploadZone');
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                document.getElementById('cover_image').files = e.dataTransfer.files;
+                const event = { target: { files: [file] } };
+                previewImage(event);
+            }
+        });
+    </script>
 @endsection

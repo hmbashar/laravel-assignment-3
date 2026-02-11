@@ -1,101 +1,170 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'BookStock - Book Management System')</title>
-
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@yield('title', 'BookStock | Interactive Cares')</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: {
+                            50: "#eef2ff",
+                            100: "#e0e7ff",
+                            500: "#6366f1",
+                            600: "#4f46e5",
+                            700: "#4338ca",
+                        },
+                        purple: {
+                            50: "#faf5ff",
+                            500: "#a855f7",
+                            600: "#9333ea",
+                            700: "#7e22ce",
+                        },
+                    },
+                },
+            },
+        };
+    </script>
     <style>
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
         body {
-            background-color: #f8f9fa;
+            font-family: "Inter", sans-serif;
         }
 
-        .navbar {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+        .sidebar-link {
+            transition: all 0.2s ease;
         }
 
-        .card {
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, .075);
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background-color: #f3f4f6;
+            border-left: 4px solid #4f46e5;
         }
 
-        .book-cover {
-            width: 80px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 4px;
+        .dropdown-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .upload-zone {
+            border: 2px dashed #d1d5db;
+            transition: all 0.2s ease;
+        }
+
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: #4f46e5;
+            background-color: #eef2ff;
         }
     </style>
-
-    @yield('styles')
 </head>
 
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('books.index') }}">
-                <i class="bi bi-book"></i> BookStock
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('books.index') ? 'active' : '' }}"
-                            href="{{ route('books.index') }}">
-                            <i class="bi bi-list"></i> All Books
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('books.create') ? 'active' : '' }}"
-                            href="{{ route('books.create') }}">
-                            <i class="bi bi-plus-circle"></i> Add New Book
-                        </a>
-                    </li>
-                </ul>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Dashboard Container -->
+    <div class="flex flex-col lg:flex-row min-h-screen">
+        <!-- Sidebar -->
+        <aside class="lg:w-64 bg-white shadow-lg z-10 lg:h-screen lg:sticky lg:top-0">
+            <div class="p-6 border-b">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="bg-gradient-to-r from-indigo-500 to-purple-600 w-10 h-10 rounded-xl flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                            class="w-5 h-5 text-white">
+                            <path fill-rule="evenodd"
+                                d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1
+                            class="font-bold text-lg bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                            Interactive Cares
+                        </h1>
+                        <p class="text-xs text-gray-500">Dashboard</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </nav>
 
-    <!-- Main Content -->
-    <main class="container">
-        <!-- Success/Error Messages -->
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="p-4">
+                <nav class="space-y-1">
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg sidebar-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 text-gray-500">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                        <span class="font-medium">My Profile</span>
+                    </a>
+
+                    <div class="pt-4 pb-2">
+                        <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Book Management</p>
+                    </div>
+
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg sidebar-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 text-gray-500">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 01-1.125-1.125v-3.75zM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-8.25zM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 01-1.125-1.125v-2.25z" />
+                        </svg>
+                        <span class="font-medium">Categories</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-lg sidebar-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 text-gray-500">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                        <span class="font-medium">Authors</span>
+                    </a>
+                    <a href="{{ route('books.index') }}"
+                        class="flex items-center space-x-3 p-3 rounded-lg sidebar-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor"
+                            class="w-5 h-5 {{ request()->routeIs('books.*') ? 'text-indigo-600' : 'text-gray-500' }}">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                        </svg>
+                        <span class="font-medium">Books</span>
+                    </a>
+                </nav>
             </div>
-        @endif
+        </aside>
 
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-circle"></i> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col">
+            @yield('content')
+        </main>
+    </div>
 
-        @yield('content')
-    </main>
+    <script>
+        // Dropdown functionality
+        function toggleDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
 
-    <!-- Footer -->
-    <footer class="mt-5 py-4 bg-light">
-        <div class="container text-center text-muted">
-            <p class="mb-0">&copy; 2026 BookStock - Assignment 03</p>
-        </div>
-    </footer>
-
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    @yield('scripts')
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (event) {
+            const dropdown = document.getElementById('userDropdown');
+            const button = document.getElementById('userMenuButton');
+            if (dropdown && button && !dropdown.contains(event.target) && !button.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
 </body>
 
 </html>
