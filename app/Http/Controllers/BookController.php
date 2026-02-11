@@ -140,6 +140,7 @@ class BookController extends Controller
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'description' => 'nullable|string',
             'published_at' => 'nullable|date',
+            'status' => 'required|in:available,borrowed,reserved',
         ]);
 
         // Fetch existing book
