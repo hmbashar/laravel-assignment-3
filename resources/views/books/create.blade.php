@@ -171,7 +171,8 @@
                                 <option value="">Select an author</option>
                                 @foreach($authors as $author)
                                     <option value="{{ $author->id }}" {{ old('author_id') == $author->id ? 'selected' : '' }}>
-                                        {{ $author->name }}</option>
+                                        {{ $author->name }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('author_id')
@@ -211,6 +212,21 @@
                         <input type="date" id="published_at" name="published_at" value="{{ old('published_at') }}"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors @error('published_at') border-red-500 @enderror" />
                         @error('published_at')
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Status <span
+                                class="text-red-500">*</span></label>
+                        <select id="status" name="status" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors @error('status') border-red-500 @enderror">
+                            <option value="">Select status</option>
+                            <option value="available" {{ old('status') == 'available' ? 'selected' : '' }}>Available</option>
+                            <option value="borrowed" {{ old('status') == 'borrowed' ? 'selected' : '' }}>Borrowed</option>
+                            <option value="reserved" {{ old('status') == 'reserved' ? 'selected' : '' }}>Reserved</option>
+                        </select>
+                        @error('status')
                             <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                         @enderror
                     </div>

@@ -54,6 +54,7 @@ class BookController extends Controller
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'description' => 'nullable|string',
             'published_at' => 'nullable|date',
+            'status' => 'required|in:available,borrowed,reserved',
         ]);
 
         // Handle file upload
@@ -73,6 +74,7 @@ class BookController extends Controller
             'cover_image' => $validated['cover_image'] ?? null,
             'description' => $validated['description'] ?? null,
             'published_at' => $validated['published_at'] ?? null,
+            'status' => $validated['status'],
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -174,6 +176,7 @@ class BookController extends Controller
                 'cover_image' => $validated['cover_image'],
                 'description' => $validated['description'] ?? null,
                 'published_at' => $validated['published_at'] ?? null,
+                'status' => $validated['status'],
                 'updated_at' => now(),
             ]);
 
